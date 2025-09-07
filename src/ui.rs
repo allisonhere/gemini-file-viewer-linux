@@ -64,6 +64,19 @@ pub(crate) fn toolbar(ui: &mut egui::Ui, app: &mut crate::app::FileViewerApp, ct
     if matches!(app.content, Some(crate::app::Content::Image(_))) {
         ui.separator();
         let prev_fit = app.image_fit;
+        if let Some(cur) = app.current_path.clone() {
+            if ui.button("Prev").clicked() {
+                if let Some(prev) = crate::io::neighbor_image(&cur, false) {
+                    *file_to_load = Some(prev);
+                }
+            }
+            if ui.button("Next").clicked() {
+                if let Some(next) = crate::io::neighbor_image(&cur, true) {
+                    *file_to_load = Some(next);
+                }
+            }
+        }
+        ui.separator();
         ui.checkbox(&mut app.image_fit, "Fit to Window");
         if app.image_fit != prev_fit { crate::settings::save_settings_to_disk(app); }
         if ui.button("Zoom -").clicked() { app.image_fit = false; app.image_zoom = (app.image_zoom / 1.10).clamp(0.1, 6.0); }

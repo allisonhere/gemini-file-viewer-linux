@@ -270,6 +270,42 @@ impl eframe::App for FileViewerApp {
                     _ => {}
                 }
             }
+
+            // Image navigation with arrow keys
+            if i.key_pressed(egui::Key::ArrowRight) {
+                if matches!(self.content, Some(Content::Image(_))) {
+                    if let Some(cur) = self.current_path.clone() {
+                        if let Some(next) = crate::io::neighbor_image(&cur, true) {
+                            file_to_load = Some(next);
+                        }
+                    }
+                }
+            }
+            if i.key_pressed(egui::Key::ArrowLeft) {
+                if matches!(self.content, Some(Content::Image(_))) {
+                    if let Some(cur) = self.current_path.clone() {
+                        if let Some(prev) = crate::io::neighbor_image(&cur, false) {
+                            file_to_load = Some(prev);
+                        }
+                    }
+                }
+            }
+            // Also support '<' and '>' typed keys when viewing images
+            if matches!(self.content, Some(Content::Image(_))) {
+                for ev in &i.events {
+                    if let egui::Event::Text(t) = ev {
+                        if t == ">" {
+                            if let Some(cur) = self.current_path.clone() {
+                                if let Some(next) = crate::io::neighbor_image(&cur, true) { file_to_load = Some(next); }
+                            }
+                        } else if t == "<" {
+                            if let Some(cur) = self.current_path.clone() {
+                                if let Some(prev) = crate::io::neighbor_image(&cur, false) { file_to_load = Some(prev); }
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         // About dialog
@@ -421,5 +457,3 @@ impl eframe::App for FileViewerApp {
         }
     }
 }
-
-
