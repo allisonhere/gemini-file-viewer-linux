@@ -82,6 +82,17 @@ pub(crate) fn toolbar(ui: &mut egui::Ui, app: &mut crate::app::FileViewerApp, ct
         if ui.button("Zoom -").clicked() { app.image_fit = false; app.image_zoom = (app.image_zoom / 1.10).clamp(0.1, 6.0); }
         if ui.button("Zoom +").clicked() { app.image_fit = false; app.image_zoom = (app.image_zoom * 1.10).clamp(0.1, 6.0); }
         if ui.button("100%").clicked() { app.image_fit = false; app.image_zoom = 1.0; }
+    } else if matches!(app.content, Some(crate::app::Content::Text(_))) {
+        // Prev/Next navigation for text files within the same folder
+        if let Some(cur) = app.current_path.clone() {
+            ui.separator();
+            if ui.button("Prev").clicked() {
+                if let Some(prev) = crate::io::neighbor_text(&cur, false) { *file_to_load = Some(prev); }
+            }
+            if ui.button("Next").clicked() {
+                if let Some(next) = crate::io::neighbor_text(&cur, true) { *file_to_load = Some(next); }
+            }
+        }
     }
 }
 
