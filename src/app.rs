@@ -271,36 +271,50 @@ impl eframe::App for FileViewerApp {
                 }
             }
 
-            // Image navigation with arrow keys
+            // Navigation with arrow keys for current content type
             if i.key_pressed(egui::Key::ArrowRight) {
-                if matches!(self.content, Some(Content::Image(_))) {
-                    if let Some(cur) = self.current_path.clone() {
-                        if let Some(next) = crate::io::neighbor_image(&cur, true) {
-                            file_to_load = Some(next);
+                if let Some(cur) = self.current_path.clone() {
+                    match self.content {
+                        Some(Content::Image(_)) => {
+                            if let Some(next) = crate::io::neighbor_image(&cur, true) { file_to_load = Some(next); }
                         }
+                        Some(Content::Text(_)) => {
+                            if let Some(next) = crate::io::neighbor_text(&cur, true) { file_to_load = Some(next); }
+                        }
+                        _ => {}
                     }
                 }
             }
             if i.key_pressed(egui::Key::ArrowLeft) {
-                if matches!(self.content, Some(Content::Image(_))) {
-                    if let Some(cur) = self.current_path.clone() {
-                        if let Some(prev) = crate::io::neighbor_image(&cur, false) {
-                            file_to_load = Some(prev);
+                if let Some(cur) = self.current_path.clone() {
+                    match self.content {
+                        Some(Content::Image(_)) => {
+                            if let Some(prev) = crate::io::neighbor_image(&cur, false) { file_to_load = Some(prev); }
                         }
+                        Some(Content::Text(_)) => {
+                            if let Some(prev) = crate::io::neighbor_text(&cur, false) { file_to_load = Some(prev); }
+                        }
+                        _ => {}
                     }
                 }
             }
-            // Also support '<' and '>' typed keys when viewing images
-            if matches!(self.content, Some(Content::Image(_))) {
-                for ev in &i.events {
-                    if let egui::Event::Text(t) = ev {
-                        if t == ">" {
-                            if let Some(cur) = self.current_path.clone() {
-                                if let Some(next) = crate::io::neighbor_image(&cur, true) { file_to_load = Some(next); }
+            // Support '<' and '>' typed keys for both images and text
+            for ev in &i.events {
+                if let egui::Event::Text(t) = ev {
+                    if t == ">" {
+                        if let Some(cur) = self.current_path.clone() {
+                            match self.content {
+                                Some(Content::Image(_)) => { if let Some(next) = crate::io::neighbor_image(&cur, true) { file_to_load = Some(next); } }
+                                Some(Content::Text(_)) => { if let Some(next) = crate::io::neighbor_text(&cur, true) { file_to_load = Some(next); } }
+                                _ => {}
                             }
-                        } else if t == "<" {
-                            if let Some(cur) = self.current_path.clone() {
-                                if let Some(prev) = crate::io::neighbor_image(&cur, false) { file_to_load = Some(prev); }
+                        }
+                    } else if t == "<" {
+                        if let Some(cur) = self.current_path.clone() {
+                            match self.content {
+                                Some(Content::Image(_)) => { if let Some(prev) = crate::io::neighbor_image(&cur, false) { file_to_load = Some(prev); } }
+                                Some(Content::Text(_)) => { if let Some(prev) = crate::io::neighbor_text(&cur, false) { file_to_load = Some(prev); } }
+                                _ => {}
                             }
                         }
                     }
