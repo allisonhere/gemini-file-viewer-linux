@@ -1,4 +1,10 @@
-/target
+# Ignore Rust target outputs by default
+/target/*
+# But keep the release binary in Git
+!/target/release/
+/target/release/*
+!/target/release/gemini-file-viewer
+!/target/release/gemini-file-viewer.d
 # Ignore accidental device-name files on Windows
 CON
 PRN
