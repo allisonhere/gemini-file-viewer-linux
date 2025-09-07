@@ -1,12 +1,21 @@
 Gemini File Viewer (Linux)
 
+Pre-beta
+- This app is currently in pre-beta. Features and UI may change and bugs are expected. Please report issues and suggestions.
+
 A lightweight desktop viewer for text/code and images, built with egui/eframe. This variant is set up for Linux builds with small, portable binaries.
 
 Highlights
 - Persistent settings: Remembers Dark Mode, Line Numbers, and Recent Files across runs.
 - Recent Files: Wide, non-wrapping menu with a Clear option.
 - Image formats: PNG, JPEG, GIF, BMP, WEBP (scaled smoothly).
+- Prev/Next navigation: Navigate sibling files in the same folder when viewing images or text files.
 - Size-optimized release: opt-level="z", LTO, panic=abort, strip=true.
+
+Usage
+- Open a file via Open File or Recent Files.
+- When viewing an image or a text file, Prev and Next buttons appear in the toolbar to move to the previous/next sibling file in the same directory.
+- Use the status bar to copy the path or open the containing folder.
 
 Prerequisites
 - Toolchain: Rust stable (rustup)

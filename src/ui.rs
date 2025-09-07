@@ -6,6 +6,10 @@ pub(crate) fn toolbar(ui: &mut egui::Ui, app: &mut crate::app::FileViewerApp, ct
     use rfd::FileDialog;
     use egui::RichText;
 
+    // Pre-beta label in the header toolbar
+    ui.label(RichText::new("Pre-beta").weak());
+    ui.add_space(8.0);
+
     if ui
         .button(RichText::new("Open File"))
         .clicked()

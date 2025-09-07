@@ -1,6 +1,6 @@
 # Ignore Rust target outputs by default
 /target/*
-# But keep the release binary in Git
+# Pre-beta: keep shipping the compiled release binary in Git for convenience
 !/target/release/
 /target/release/*
 !/target/release/gemini-file-viewer
