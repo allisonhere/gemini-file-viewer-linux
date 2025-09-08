@@ -28,6 +28,8 @@ Screenshots
   ![Image Viewer](assets/screenshots/ui-image-view.png)
 - Quick demo:
   ![Demo](assets/screenshots/demo.gif)
+ - Additional screen:
+   ![Screen](assets/screenshots/screen.png)
 
 Prerequisites
 - Toolchain: Rust stable (rustup)
